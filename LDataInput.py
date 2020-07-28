@@ -3,6 +3,7 @@ import numpy as np
 import multiprocessing as mp
 from multiprocessing import Queue
 import copy
+import shlex
 
 class LOutOfRangeError(Exception):
   pass
@@ -77,7 +78,7 @@ class DataGenerator(object):
     X=[]
     y=[]
     for it in batch_list:
-      paths = it.split()
+      paths = shlex.split(it)
       imgP = paths[0]
       lblP = paths[1]
       tx = np.array(PIL.Image.open(imgP))
@@ -129,7 +130,7 @@ def getPairFileLists(listFilePath):
   fileList=[]
   with open(listFilePath,'r') as f:
     print(listFilePath+'--file open success')
-    lines = f.read().split()
+    lines = shlex.split(f.read())
   for idx in range(0,len(lines)//2):
     fileList.append(lines[idx*2]+' '+lines[idx*2+1])
   return fileList
@@ -138,7 +139,7 @@ def getPairFileLists(listFilePath):
 def getSingleFileLists(listFilePath):
   with open(listFilePath,'r') as f:
     print(listFilePath+'--file open success')
-    lines = f.read().split()
+    lines = shlex.split(f.read())
   return lines
 
 #Text file whose each row formed by <image,groundTruth,prediction>
@@ -150,7 +151,7 @@ def getTripleFileLists(listFilePath):
     print(listFilePath+'--file open success')
     lines = f.read().split('\n')
   for line in lines:
-    items = line.split()
+    items = shlex.split(line)
     if len(items)==3:
       imageFileList.append(items[0])
       groundTruthFileList.append(items[1])
@@ -166,7 +167,7 @@ def getDoubleFileLists(listFilePath):
     print(listFilePath+'--file open success')
     lines = f.read().split('\n')
   for line in lines:
-    items = line.split()
+    items = shlex.split(line)
     if len(items)==2:
       imageFileList.append(items[0])
       predictionFileList.append(items[1])

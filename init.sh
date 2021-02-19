@@ -1,3 +1,2 @@
-mkdir checkpoints
 mkdir output
-python toolkit/getFileLists.py
+python3 toolkit/getFileLists.py
